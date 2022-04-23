@@ -20,29 +20,29 @@ import java.util.UUID;
 @Entity
 @Table(name = "tables")
 public class ReservationTable implements Serializable {
-    @Serial private static final long serialVersionUID = -7095213014257988289L;
+  @Serial private static final long serialVersionUID = -7095213014257988289L;
 
-    @Id
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
-    @Type(type = "org.hibernate.type.PostgresUUIDType")
-    private UUID id;
+  @Id
+  @Column(name = "id", nullable = false, insertable = false, updatable = false)
+  @Type(type = "org.hibernate.type.PostgresUUIDType")
+  private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
-    private Store store;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "store_id", nullable = false)
+  private Store store;
 
-    @Column(name = "name", nullable = false, length = 64)
-    private String name;
+  @Column(name = "name", nullable = false, length = 64)
+  private String name;
 
-    @Column(name = "max_person", nullable = false)
-    private Boolean maxPerson = false;
+  @Column(name = "max_person", nullable = false)
+  private Boolean maxPerson = false;
 
-    @Column(name = "total_person", nullable = false)
-    private Boolean totalPerson = false;
+  @Column(name = "total_person", nullable = false)
+  private Boolean totalPerson = false;
 
-    @Column(name = "book_price", nullable = false, precision = 11, scale = 2)
-    private BigDecimal bookPrice;
+  @Column(name = "book_price", nullable = false, precision = 11, scale = 2)
+  private BigDecimal bookPrice;
 
-    @OneToMany(mappedBy = "table")
-    private Set<Order> orders = new LinkedHashSet<>();
+  @OneToMany(mappedBy = "table")
+  private Set<Order> orders = new LinkedHashSet<>();
 }

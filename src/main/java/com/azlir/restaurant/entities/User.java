@@ -48,18 +48,12 @@ public class User implements Serializable {
   @Column(name = "language_code", nullable = false, length = 2)
   private String languageCode;
 
-  @ManyToOne(
-      fetch = FetchType.LAZY,
-      cascade = {CascadeType.ALL})
-  @JoinColumn(name = "role", nullable = false)
-  private Role role;
-
   @Column(
       name = "created_at",
       nullable = false,
       updatable = false,
       insertable = false,
-      columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
+      columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
   private Instant createdAt;
 
   @ManyToMany
@@ -78,7 +72,7 @@ public class User implements Serializable {
   @OneToMany(mappedBy = "user")
   private Set<Order> orders = new LinkedHashSet<>();
 
-  public static User fromUserDto(UserDto userDto, Role role) {
+  public static User fromUserDto(UserDto userDto) {
     return User.builder()
         .fullName(userDto.getFullName())
         .phone(userDto.getPhone())

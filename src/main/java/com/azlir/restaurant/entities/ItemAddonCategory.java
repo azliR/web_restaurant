@@ -19,26 +19,26 @@ import java.util.UUID;
 @Entity
 @Table(name = "item_addon_categories")
 public class ItemAddonCategory implements Serializable {
-    @Serial private static final long serialVersionUID = 6529876578345477874L;
+  @Serial private static final long serialVersionUID = 6529876578345477874L;
 
-    @Id
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
-    @Type(type = "org.hibernate.type.PostgresUUIDType")
-    private UUID id;
+  @Id
+  @Column(name = "id", nullable = false, insertable = false, updatable = false)
+  @Type(type = "org.hibernate.type.PostgresUUIDType")
+  private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
-    private Item item;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "item_id", nullable = false)
+  private Item item;
 
-    @Column(name = "name", nullable = false, length = 64)
-    private String name;
+  @Column(name = "name", nullable = false, length = 64)
+  private String name;
 
-    @Column(name = "description")
-    private String description;
+  @Column(name = "description")
+  private String description;
 
-    @Column(name = "is_multiple_choice", nullable = false)
-    private Boolean isMultipleChoice = false;
+  @Column(name = "is_multiple_choice", nullable = false)
+  private Boolean isMultipleChoice = false;
 
-    @OneToMany(mappedBy = "addonCategory")
-    private Set<ItemAddon> itemAddons = new LinkedHashSet<>();
+  @OneToMany(mappedBy = "addonCategory")
+  private Set<ItemAddon> itemAddons = new LinkedHashSet<>();
 }

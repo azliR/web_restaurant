@@ -20,23 +20,23 @@ import java.util.UUID;
 @Entity
 @Table(name = "item_addons")
 public class ItemAddon implements Serializable {
-    @Serial private static final long serialVersionUID = -1122607968342313652L;
+  @Serial private static final long serialVersionUID = -1122607968342313652L;
 
-    @Id
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
-    @Type(type = "org.hibernate.type.PostgresUUIDType")
-    private UUID id;
+  @Id
+  @Column(name = "id", nullable = false, insertable = false, updatable = false)
+  @Type(type = "org.hibernate.type.PostgresUUIDType")
+  private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "addon_category_id")
-    private ItemAddonCategory addonCategory;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "addon_category_id", nullable = false)
+  private ItemAddonCategory addonCategory;
 
-    @Column(name = "name", nullable = false, length = 64)
-    private String name;
+  @Column(name = "name", nullable = false, length = 64)
+  private String name;
 
-    @Column(name = "price", nullable = false, precision = 11, scale = 2)
-    private BigDecimal price;
+  @Column(name = "price", nullable = false, precision = 11, scale = 2)
+  private BigDecimal price;
 
-    @OneToMany(mappedBy = "addon")
-    private Set<OrderDetailAddon> orderDetailAddons = new LinkedHashSet<>();
+  @OneToMany(mappedBy = "addon")
+  private Set<OrderDetailAddon> orderDetailAddons = new LinkedHashSet<>();
 }
