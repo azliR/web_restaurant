@@ -18,7 +18,28 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: 'true'
+  mail:
+    host: smtp.gmail.com
+    username: rizalhadiyansah@gmail.com
+    properties:
+      mail:
+        smtp:
+          starttls:
+            required: 'true'
+            enable: 'true'
+          connection-timeout: '30000'
+          timeout: '30000'
+          auth: 'true'
+    protocol: smtp
+    test-connection: 'false'
+    port: '587'
+    password: sfsdqzdqbvbcpqfl
+    default-encoding: UTF-8
   datasource:
     username: postgres
-    url: jdbc:postgresql://localhost:5432/restaurant
+    url: jdbc:postgresql://localhost:5432/restaurant?stringtype=unspecified
     password: root
+  messages:
+    basename: base
+  server:
+    port: '8080'
