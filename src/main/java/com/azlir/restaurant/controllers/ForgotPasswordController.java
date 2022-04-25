@@ -66,7 +66,7 @@ public class ForgotPasswordController {
     final var storeAdmin = storeAccount.getStoreAdmin();
     storeAdmin.setTokenResetPassword(UUID.randomUUID().toString());
     storeAdmin.setTokenExpiredAt(Instant.now().plus(Duration.ofMinutes(30)));
-    storeAccountService.saveAdmin(storeAccount, storeAdmin);
+    storeAccountService.saveAdmin(storeAccount, storeAdmin, request);
 
     if (storeAdmin.getTokenResetPassword() == null) {
       model.addAttribute(

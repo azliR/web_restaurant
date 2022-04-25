@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Locale;
 
@@ -38,6 +39,7 @@ public class SignupController {
   public String saveUser(
       @Valid @ModelAttribute("storeAccount") StoreAccount storeAccount,
       @Valid @ModelAttribute("storeAdmin") StoreAdmin storeAdmin,
+      HttpServletRequest request,
       BindingResult result,
       Model model,
       RedirectAttributes attributes) {
@@ -49,7 +51,7 @@ public class SignupController {
           "error", messageSource.getMessage("EMAIL_EXISTS", new Object[] {}, Locale.ENGLISH));
       return "signup";
     }
-    storeAccount = storeAccountService.saveAdmin(storeAccount, storeAdmin);
+    storeAccount = storeAccountService.saveAdmin(storeAccount, storeAdmin, request);
     if (storeAccount == null) {
       model.addAttribute(
           "error", messageSource.getMessage("EMAIL_NOT_SAVED", new Object[] {}, Locale.ENGLISH));

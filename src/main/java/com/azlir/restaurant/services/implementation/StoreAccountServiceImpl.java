@@ -1,10 +1,14 @@
 package com.azlir.restaurant.services.implementation;
 
+import com.azlir.restaurant.entities.database.Postcode;
+import com.azlir.restaurant.entities.database.Store;
 import com.azlir.restaurant.entities.database.StoreAccount;
 import com.azlir.restaurant.entities.database.StoreAdmin;
+import com.azlir.restaurant.entities.enums.PickupType;
 import com.azlir.restaurant.entities.enums.StoreRole;
 import com.azlir.restaurant.repositories.StoreAccountRepository;
 import com.azlir.restaurant.repositories.StoreAdminRepository;
+import com.azlir.restaurant.repositories.StoreRepository;
 import com.azlir.restaurant.services.framework.StoreAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,17 +18,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Random;
+
 @Service
 public class StoreAccountServiceImpl implements StoreAccountService {
   private final StoreAccountRepository storeAccountRepository;
   private final StoreAdminRepository storeAdminRepository;
+  private final StoreRepository storeRepository;
   private final BCryptPasswordEncoder passwordEncoder;
 
   @Autowired
   public StoreAccountServiceImpl(
-          StoreAccountRepository storeAccountRepository, StoreAdminRepository storeAdminRepository, BCryptPasswordEncoder passwordEncoder) {
+          StoreAccountRepository storeAccountRepository, StoreAdminRepository storeAdminRepository, StoreRepository storeRepository, BCryptPasswordEncoder passwordEncoder) {
     this.storeAccountRepository = storeAccountRepository;
     this.storeAdminRepository = storeAdminRepository;
+    this.storeRepository = storeRepository;
     this.passwordEncoder = passwordEncoder;
   }
 
@@ -74,11 +83,35 @@ public class StoreAccountServiceImpl implements StoreAccountService {
   }
 
   @Override
-  public StoreAccount saveAdmin(StoreAccount storeAccount, StoreAdmin storeAdmin) {
+  public StoreAccount saveAdmin(StoreAccount storeAccount, StoreAdmin storeAdmin, HttpServletRequest request) {
     storeAccount.setRole(StoreRole.admin);
     storeAccount.setStoreAdmin(storeAdmin);
     storeAdmin.setStoreAccount(storeAccount);
     storeAdmin.setPassword(passwordEncoder.encode(storeAdmin.getPassword()));
+    String storeId;
+    if (storeAdmin.getStore() == null) {
+      final var postcode = new Postcode();
+      postcode.setId("45595");
+      postcode.setCity("Hồ Chí Minh");
+      postcode.setState("Hồ Chí Minh");
+      postcode.setCountry("Việt Nam");
+
+      final var store = new Store();
+      store.setStoreAdmin(storeAdmin);
+      store.setName("Store " + storeAdmin.getEmail());
+      store.setPhone(String.valueOf(new Random().nextInt(15)));
+      store.setPickupType(PickupType.pickup);
+      store.setStreetAddress("Jl. Raya Bogor KM.5");
+      store.setPostcode(postcode);
+      store.setLatitude(21.4224829);
+      store.setLongitude(39.8240889);
+      final var newStore = storeRepository.save(store);
+      storeId = newStore.getId().toString();
+    } else {
+      storeId = storeAdmin.getStore().getId().toString();
+    }
+
+      request.getSession().setAttribute("STORE_ID", storeId);
     return storeAccountRepository.save(storeAccount);
   }
 }

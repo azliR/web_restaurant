@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface StoreAccountService extends UserDetailsService {
   StoreAccount findByEmail(String email);
 
@@ -15,5 +17,5 @@ public interface StoreAccountService extends UserDetailsService {
 
   void updatePassword(StoreAccount user);
 
-  StoreAccount saveAdmin(StoreAccount user, StoreAdmin storeAdmin);
+  StoreAccount saveAdmin(StoreAccount user, StoreAdmin storeAdmin, HttpServletRequest request);
 }
