@@ -6,6 +6,7 @@ import com.azlir.restaurant.entities.database.StoreAccount;
 import com.azlir.restaurant.entities.database.StoreAdmin;
 import com.azlir.restaurant.entities.enums.PickupType;
 import com.azlir.restaurant.entities.enums.StoreRole;
+import com.azlir.restaurant.repositories.PostcodeRepository;
 import com.azlir.restaurant.repositories.StoreAccountRepository;
 import com.azlir.restaurant.repositories.StoreAdminRepository;
 import com.azlir.restaurant.repositories.StoreRepository;
@@ -26,14 +27,16 @@ public class StoreAccountServiceImpl implements StoreAccountService {
   private final StoreAccountRepository storeAccountRepository;
   private final StoreAdminRepository storeAdminRepository;
   private final StoreRepository storeRepository;
+  private final PostcodeRepository postcodeRepository;
   private final BCryptPasswordEncoder passwordEncoder;
 
   @Autowired
   public StoreAccountServiceImpl(
-          StoreAccountRepository storeAccountRepository, StoreAdminRepository storeAdminRepository, StoreRepository storeRepository, BCryptPasswordEncoder passwordEncoder) {
+          StoreAccountRepository storeAccountRepository, StoreAdminRepository storeAdminRepository, StoreRepository storeRepository, PostcodeRepository postcodeRepository, BCryptPasswordEncoder passwordEncoder) {
     this.storeAccountRepository = storeAccountRepository;
     this.storeAdminRepository = storeAdminRepository;
     this.storeRepository = storeRepository;
+    this.postcodeRepository = postcodeRepository;
     this.passwordEncoder = passwordEncoder;
   }
 
@@ -105,6 +108,9 @@ public class StoreAccountServiceImpl implements StoreAccountService {
       store.setPostcode(postcode);
       store.setLatitude(21.4224829);
       store.setLongitude(39.8240889);
+      if (postcodeRepository.findById(postcode.getId()).isEmpty()) {
+        postcodeRepository.save(postcode);
+      }
       final var newStore = storeRepository.save(store);
       storeId = newStore.getId().toString();
     } else {

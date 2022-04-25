@@ -60,7 +60,7 @@ public class Store implements Serializable {
   @Column(name = "street_address", nullable = false)
   private String streetAddress;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.MERGE)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REMOVE)
   @JoinColumn(name = "postcode_id", nullable = false)
   private Postcode postcode;
 
