@@ -25,8 +25,8 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public List<Item> getAllItems() {
-    return itemRepository.findAll();
+  public List<Item> getItemsByStoreId(UUID storeId) {
+    return itemRepository.findByStoreId(storeId);
   }
 
   @Override

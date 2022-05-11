@@ -125,6 +125,7 @@ br {
 
 
 
+
     </style>
 
 </head>
@@ -197,7 +198,7 @@ br {
                     <textarea aria-describedby="basic-addon1" class="form-control" id="description"
                               placeholder="Description" th:errorClass="is-invalid"
                               th:field="*{description}" rows="3"></textarea>
-                    <label for="description">Description</label>
+                    <label for="description">Description (optional)</label>
                     <span class="text-danger"
                           th:errors="*{description}"
                           th:if="${#fields.hasErrors('description')}"></span>

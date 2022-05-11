@@ -41,7 +41,6 @@ public class Item implements Serializable {
   @Column(name = "name", nullable = false, length = 64)
   private String itemName;
 
-  @Lob
   @Column(name = "picture")
   private String picture;
 

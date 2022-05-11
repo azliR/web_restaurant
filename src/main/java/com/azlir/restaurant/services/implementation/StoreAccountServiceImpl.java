@@ -16,20 +16,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Random;
-
-import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Service
 public class StoreAccountServiceImpl implements StoreAccountService {
@@ -131,25 +124,5 @@ public class StoreAccountServiceImpl implements StoreAccountService {
 
     request.getSession().setAttribute("STORE_ID", storeId);
     return storeAccountRepository.save(storeAccount);
-  }
-
-  @Override
-  public StoreAccount login(StoreAdmin user, HttpServletRequest request) {
-    try {
-      UsernamePasswordAuthenticationToken authReq
-              = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
-      Authentication auth = authManager.authenticate(authReq);
-      SecurityContext sc = SecurityContextHolder.getContext();
-      sc.setAuthentication(auth);
-      HttpSession session = request.getSession(true);
-      session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-
-      final var storeAdmin = storeAdminRepository.findByEmail(user.getEmail()).orElseThrow();
-      request.getSession().setAttribute("STORE_ID", storeAdmin.getStore().getId());
-      return storeAdmin.getStoreAccount();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
   }
 }

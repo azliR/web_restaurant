@@ -42,11 +42,9 @@ public class Store implements Serializable {
   @Column(name = "description")
   private String description;
 
-  @Lob
   @Column(name = "image")
   private String image;
 
-  @Lob
   @Column(name = "banner")
   private String banner;
 

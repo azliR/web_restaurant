@@ -18,6 +18,4 @@ public interface StoreAccountService extends UserDetailsService {
   void updatePassword(StoreAccount user);
 
   StoreAccount saveAdmin(StoreAccount user, StoreAdmin storeAdmin, HttpServletRequest request);
-
-  StoreAccount login(StoreAdmin user, HttpServletRequest request);
 }

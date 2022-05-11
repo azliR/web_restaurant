@@ -3,6 +3,7 @@ package com.azlir.restaurant.controllers;
 import com.azlir.restaurant.entities.database.Item;
 import com.azlir.restaurant.entities.database.ItemCategory;
 import com.azlir.restaurant.services.framework.ItemService;
+import com.azlir.restaurant.services.framework.StoreAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,15 +22,20 @@ import java.util.UUID;
 @Controller
 public class IndexController {
   private final ItemService itemService;
+  private final StoreAccountService storeAdminService;
 
   @Autowired
-  public IndexController(ItemService itemService) {
+  public IndexController(ItemService itemService, StoreAccountService storeAdminService) {
     this.itemService = itemService;
+    this.storeAdminService = storeAdminService;
   }
 
   @GetMapping("/")
-  public String index(Model model) {
-    model.addAttribute("item", itemService.getAllItems());
+  public String index(Model model, HttpServletRequest request) {
+    final var storeAccount =
+        storeAdminService.findByEmail(request.getSession().getAttribute("username").toString());
+    model.addAttribute(
+        "item", itemService.getItemsByStoreId(storeAccount.getStoreAdmin().getStore().getId()));
     return "index";
   }
 

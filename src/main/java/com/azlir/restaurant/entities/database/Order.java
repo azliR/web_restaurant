@@ -51,11 +51,9 @@ public class Order implements Serializable {
   @Column(name = "buyer", nullable = false, length = 64)
   private String buyer;
 
-  @Lob
   @Column(name = "store_image")
   private String storeImage;
 
-  @Lob
   @Column(name = "store_banner")
   private String storeBanner;
 

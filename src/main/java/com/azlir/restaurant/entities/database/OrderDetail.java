@@ -44,7 +44,6 @@ public class OrderDetail implements Serializable {
   @Column(name = "netto", nullable = false, precision = 11, scale = 2)
   private BigDecimal netto;
 
-  @Lob
   @Column(name = "picture")
   private String picture;
 

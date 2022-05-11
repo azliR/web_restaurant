@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ItemService {
-  List<Item> getAllItems();
+  List<Item> getItemsByStoreId(UUID storeId);
 
   Optional<Item> findById(UUID id);
 
