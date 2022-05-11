@@ -66,15 +66,39 @@ body {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </style>
 
 </head>
-<body class="text-center">
+<body class="text-center" style="background-color: #282c34;">
 
 <main class="form-signin">
     <form method="post" th:action="@{/signup}" th:object="${storeAccount}">
         <img alt="" class="mb-4" height="57" src="https://i.ibb.co/hL4XZp2/android-chrome-192x192.png" width="72">
-        <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+        <h1 class="h3 mb-3 fw-normal" style="color: #bbbbbb;">Create an account</h1>
 
         <div th:if="${success}">
             <div class="alert alert-success"><span th:text="${success}"></span></div>
@@ -84,17 +108,17 @@ body {
         </div>
         <div class="form-floating">
             <input aria-describedby="basic-addon1" class="form-control" id="fullName"
-                   placeholder="Nama Lengkap" th:errorClass="is-invalid"
+                   placeholder="Nama Lengkap" th:errorClass="is-invalid" required
                    th:field="*{fullName}" type="text"/>
             <label for="fullName">Nama Lengkap</label>
             <span class="text-danger"
                   th:errors="*{fullName}"
                   th:if="${#fields.hasErrors('fullName')}"></span>
         </div>
-        <div th:object="${storeAdmin}" >
+        <div th:object="${storeAdmin}">
             <div class="form-floating">
                 <input aria-describedby="basic-addon1" class="form-control" id="email"
-                       placeholder="Email" th:errorClass="is-invalid"
+                       placeholder="Email" th:errorClass="is-invalid" required
                        th:field="*{email}" type="email"/>
                 <label for="email">Email</label>
                 <span class="text-danger"
@@ -103,23 +127,23 @@ body {
             </div>
             <div class="form-floating">
                 <input aria-describedby="basic-addon1" class="form-control" id="password"
-                       placeholder="Kata sandi" th:errorClass="is-invalid"
+                       placeholder="Kata sandi" th:errorClass="is-invalid" required
                        th:field="*{password}" type="password"/>
-                <label for="password">Kata sandi</label>
+                <label for="password">Password</label>
                 <span class="text-danger"
                       th:errors="*{password}"
                       th:if="${#fields.hasErrors('password')}"></span>
             </div>
         </div>
         <p></p>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Daftar</button>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
         <p></p>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" style="color: #bbbbbb;">
                 Already registered? <a href="/" th:href="@{/login}">Login</a>
             </div>
         </div>
-        <p class="mt-5 mb-3 text-muted">Foodhub &copy;2022</p>
+        <p class="mt-5 mb-3 text-muted">Foodhub &copy;2022 | Rizal Hadiyansah</p>
     </form>
 </main>
 

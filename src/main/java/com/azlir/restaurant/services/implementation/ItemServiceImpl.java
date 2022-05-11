@@ -1,9 +1,8 @@
 package com.azlir.restaurant.services.implementation;
 
 import com.azlir.restaurant.entities.database.Item;
-import com.azlir.restaurant.repositories.ItemCategoryRepository;
 import com.azlir.restaurant.repositories.ItemRepository;
-import com.azlir.restaurant.repositories.StoreRepository;
+import com.azlir.restaurant.repositories.StoreAdminRepository;
 import com.azlir.restaurant.services.framework.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,42 +14,39 @@ import java.util.UUID;
 
 @Service
 public class ItemServiceImpl implements ItemService {
-  private final ItemRepository studentRepository;
-  private final StoreRepository storeRepository;
-  private final ItemCategoryRepository itemCategoryRepository;
+  private final ItemRepository itemRepository;
+  private final StoreAdminRepository storeAdminRepository;
 
   @Autowired
   public ItemServiceImpl(
-      ItemRepository studentRepository,
-      StoreRepository storeRepository,
-      ItemCategoryRepository itemCategoryRepository) {
-    this.studentRepository = studentRepository;
-    this.storeRepository = storeRepository;
-    this.itemCategoryRepository = itemCategoryRepository;
+      ItemRepository studentRepository, StoreAdminRepository storeAdminRepository) {
+    this.itemRepository = studentRepository;
+    this.storeAdminRepository = storeAdminRepository;
   }
 
   @Override
   public List<Item> getAllItems() {
-    return studentRepository.findAll();
+    return itemRepository.findAll();
   }
 
   @Override
   public Optional<Item> findById(UUID id) {
-    return studentRepository.findById(id);
+    return itemRepository.findById(id);
   }
 
   @Override
   public Item save(Item item, HttpServletRequest request) {
     final var store =
-        storeRepository
-            .findById(UUID.fromString((String) request.getSession().getAttribute("STORE_ID")))
-            .orElse(null);
+        storeAdminRepository
+            .findByEmail(request.getSession().getAttribute("username").toString())
+            .orElseThrow()
+            .getStore();
     item.setStore(store);
-    return studentRepository.save(item);
+    return itemRepository.save(item);
   }
 
   @Override
   public void deleteById(UUID id) {
-    studentRepository.deleteById(id);
+    itemRepository.deleteById(id);
   }
 }

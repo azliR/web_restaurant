@@ -39,7 +39,7 @@ public class Item implements Serializable {
   private ItemSubCategory subCategory;
 
   @Column(name = "name", nullable = false, length = 64)
-  private String name;
+  private String itemName;
 
   @Lob
   @Column(name = "picture")
@@ -48,7 +48,7 @@ public class Item implements Serializable {
   @Column(name = "price", nullable = false, precision = 11, scale = 2)
   private BigDecimal price;
 
-  @Column(name = "special_offer", nullable = false, precision = 11, scale = 2)
+  @Column(name = "special_offer", precision = 11, scale = 2)
   private BigDecimal specialOffer;
 
   @Column(name = "description")

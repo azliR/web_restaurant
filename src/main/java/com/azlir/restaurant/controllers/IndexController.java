@@ -4,6 +4,9 @@ import com.azlir.restaurant.entities.database.Item;
 import com.azlir.restaurant.entities.database.ItemCategory;
 import com.azlir.restaurant.services.framework.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
@@ -33,7 +37,7 @@ public class IndexController {
   public String create(Model model) {
     model.addAttribute("itemCategory", new ItemCategory());
     model.addAttribute("item", new Item());
-    return "form_item";
+    return "form-item";
   }
 
   @PostMapping(value = "/create")
@@ -48,7 +52,17 @@ public class IndexController {
   @GetMapping(value = "/edit/{id}")
   public String editItem(@PathVariable String id, Model model) {
     model.addAttribute("item", itemService.findById(UUID.fromString(id)));
-    return "form_item";
+    return "form-item";
+  }
+
+  @GetMapping("/logout")
+  public String getLogoutPage(HttpServletRequest request, HttpServletResponse response) {
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication != null)
+      new SecurityContextLogoutHandler().logout(request, response, authentication);
+
+    return "redirect:/login";
   }
 
   @GetMapping(value = "/delete/{id}")
